@@ -1,0 +1,23 @@
+from src.bot.utils.response import MessageResponse
+from src.bot.text.base import *
+from src.services import ProgressDataService
+
+
+class BaseMessageResponse(MessageResponse):
+    async def start_hand(self) -> None:
+        self.text = s_start_hand_text.render()
+        await self.answer()
+
+    async def help_hand(self) -> None:
+        self.text = s_help_hand_text.render()
+        await self.answer()
+        
+    async def levels_hand(self, service: ProgressDataService) -> None:
+        data = await service.get_levels()
+        self.text = s_levels_hand_text.render(levels=data.get("data"))
+        await self.answer()
+        
+    async def achievement_hand(self, service: ProgressDataService) -> None:
+        data = await service.get_achievements()
+        self.text = s_achievements_hand_text.render(achievements=data.get("data"))
+        await self.answer()

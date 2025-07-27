@@ -3,7 +3,7 @@ from src.config import settings
 
 
 class PostgreSQLManager(SQLAlchemyManager):
-    SQLALCHEMY_DATABASE_URL = settings.MYSQL if settings.TEST_ENVIRONMENT == "false" else settings.TEST_MYSQL
+    SQLALCHEMY_DATABASE_URL = settings.POSTGRESQL if settings.TEST_ENVIRONMENT == "false" else settings.TEST_POSTGRESQL
     
     
 sessionmanager = PostgreSQLManager()

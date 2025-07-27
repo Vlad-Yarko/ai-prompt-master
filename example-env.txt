@@ -1,0 +1,16 @@
+# Environment type
+TEST_ENVIRONMENT=
+
+# PostgreSQL database URLs (why there is not like DB you will understand later exploring the structure)
+POSTGRESQL=
+TEST_POSTGRESQL=
+
+# Redis database URLs
+REDIS=
+TEST_REDIS=
+
+# Telegram bot token
+BOT_TOKEN=
+
+# LLM model (you can find them on https://github.com/xtekky/gpt4free)
+MODEL=

@@ -93,37 +93,37 @@ class SQLAlchemyRepository(Repository):
         return data.scalars().all()
     
     async def create_one(self, **kwargs) -> Optional[Base]:
-        # PostgreSQL has RETURNING
-        # stmt = insert(self.model).values(**kwargs).returning(self.model)
-        # obj = await self.session.execute(stmt)
-        # return obj.scalar()
+        # PostgreSQL
+        stmt = insert(self.model).values(**kwargs).returning(self.model)
+        obj = await self.session.execute(stmt)
+        return obj.scalar()
         # MySQL
-        stmt = insert(self.model).values(**kwargs)
-        result = await self.session.execute(stmt)
-        obj = await self.get_one_by_id(result.lastrowid)
-        return obj
+        # stmt = insert(self.model).values(**kwargs)
+        # result = await self.session.execute(stmt)
+        # obj = await self.get_one_by_id(result.lastrowid)
+        # return obj
     
     async def update_one(self, id: Union[int, uuid.UUID], **kwargs) -> Optional[Base]:
-        # PostgreSQL has RETURNING
-        # smtp = update(self.model).where(self.model.id == id).values(**kwargs).returning(self.model)
-        # obj = await self.session.execute(smtp)
-        # return obj.scalar()
+        # PostgreSQL
+        smtp = update(self.model).where(self.model.id == id).values(**kwargs).returning(self.model)
+        obj = await self.session.execute(smtp)
+        return obj.scalar()
         # MySQL
-        smtp = update(self.model).where(self.model.id == id).values(**kwargs)
-        await self.session.execute(smtp)
-        obj = await self.get_one_by_id(id)
-        return obj
+        # smtp = update(self.model).where(self.model.id == id).values(**kwargs)
+        # await self.session.execute(smtp)
+        # obj = await self.get_one_by_id(id)
+        # return obj
     
     async def delete_one(self, id: Union[int, uuid.UUID]) -> Optional[Base]:
-        # PostgreSQL has RETURNING
-        # smtp = delete(self.model).where(self.model.id == id).returning(self.model)
-        # obj = await self.session.execute(smtp)
-        # return obj.scalar()
+        # PostgreSQL
+        smtp = delete(self.model).where(self.model.id == id).returning(self.model)
+        obj = await self.session.execute(smtp)
+        return obj.scalar()
         # MySQL
-        obj = await self.get_one_by_id(id)
-        smtp = delete(self.model).where(self.model.id == id)
-        await self.session.execute(smtp)
-        return obj
+        # obj = await self.get_one_by_id(id)
+        # smtp = delete(self.model).where(self.model.id == id)
+        # await self.session.execute(smtp)
+        # return obj
 
 
 def transaction(func):

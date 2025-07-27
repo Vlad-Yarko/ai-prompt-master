@@ -21,6 +21,9 @@ class Settings(BaseSettings):
     # Telegram bot token
     BOT_TOKEN: str
     
+    # LLM model
+    MODEL: str
+    
     model_config = SettingsConfigDict(env_file='.env')
     
     

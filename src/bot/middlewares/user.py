@@ -3,10 +3,12 @@ from typing import Any, Awaitable, Callable, Dict
 from aiogram import BaseMiddleware
 from aiogram.types import TelegramObject
 
-from src.databases.postgresql_manager import db_session
+from src.databases import db_session
+from src.services import UserService
+from src.repositories import UserRepository, UserStatsRepository
 
 
-class DBSession(BaseMiddleware):
+class UserMiddleware(BaseMiddleware):
     def __init__(self):
         pass
 
@@ -18,5 +20,10 @@ class DBSession(BaseMiddleware):
     ):
         async for session in db_session():
             data['session'] = session
+            data['service'] = UserService(
+                session=session,
+                user_repo=UserRepository,
+                user_stats_repo=UserStatsRepository
+            ) 
             result = await handler(event, data)
             return result
