@@ -1,19 +1,21 @@
 from aiogram import Router
-from aiogram.types import Message
+from aiogram.types import Message, CallbackQuery
 from aiogram.filters import Command, StateFilter
 from aiogram.fsm.context import FSMContext
 
-from src.bot.responses.base import BaseMessageResponse
-from src.services import ProgressDataService
+from src.bot.responses.base import BaseMessageResponse, BaseCallbackResponse
 from src.bot.middlewares import BaseMiddleware
+from src.bot.filters import CallDataEq
+from src.services import ProgressDataService
 
 
 router = Router()
-router.message.filter(StateFilter(None))
+# There is not need to do like that
+# router.message.filter(StateFilter(None))
 router.message.middleware(BaseMiddleware())
 
 
-@router.message(Command('start'))
+@router.message(StateFilter(None), Command('start'))
 async def start_hand(message: Message, state: FSMContext):
     await BaseMessageResponse(
         message=message,
@@ -21,7 +23,7 @@ async def start_hand(message: Message, state: FSMContext):
     ).start_hand()
 
 
-@router.message(Command('help'))
+@router.message(StateFilter(None), Command('help'))
 async def help_hand(message: Message, state: FSMContext):
     await BaseMessageResponse(
         message=message,
@@ -29,7 +31,7 @@ async def help_hand(message: Message, state: FSMContext):
     ).help_hand()
     
     
-@router.message(Command("levels"))
+@router.message(StateFilter(None), Command("levels"))
 async def levels_hand(message: Message, state: FSMContext, service: ProgressDataService):
     await BaseMessageResponse(
         message=message,
@@ -37,9 +39,33 @@ async def levels_hand(message: Message, state: FSMContext, service: ProgressData
     ).levels_hand(service)
     
     
-@router.message(Command("achievements"))
+@router.message(StateFilter(None), Command("achievements"))
 async def achievement_hand(message: Message, state: FSMContext, service: ProgressDataService):
     await BaseMessageResponse(
         message=message,
         state=state
     ).achievement_hand(service)
+    
+    
+@router.message(StateFilter(None), Command("rules"))
+async def rules_hand(message: Message, state: FSMContext):
+    await BaseMessageResponse(
+        message=message,
+        state=state
+    ).rules_hand()
+    
+    
+@router.message(StateFilter("*"), Command("quit"))
+async def message_quit_hand(message: Message, state: FSMContext):
+    await BaseMessageResponse(
+        message=message,
+        state=state
+    ).message_quit_hand()
+    
+    
+@router.callback_query(StateFilter("*"), CallDataEq("quit"))
+async def callback_quit_hand(callback: CallbackQuery, state: FSMContext):
+    await BaseCallbackResponse(
+        callback=callback,
+        state=state
+    ).callback_quit_hand()

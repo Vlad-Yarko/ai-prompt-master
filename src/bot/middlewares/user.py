@@ -5,7 +5,7 @@ from aiogram.types import TelegramObject
 
 from src.databases import db_session
 from src.services import UserService
-from src.repositories import UserRepository, UserStatsRepository
+from src.repositories import UserRepository, UserStatsRepository, LevelRepository
 
 
 class UserMiddleware(BaseMiddleware):
@@ -23,7 +23,8 @@ class UserMiddleware(BaseMiddleware):
             data['service'] = UserService(
                 session=session,
                 user_repo=UserRepository,
-                user_stats_repo=UserStatsRepository
+                user_stats_repo=UserStatsRepository,
+                level_repo=LevelRepository
             ) 
             result = await handler(event, data)
             return result
