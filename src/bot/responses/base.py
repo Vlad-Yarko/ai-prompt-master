@@ -41,9 +41,9 @@ class BaseCallbackResponse(CallbackResponse):
         current_state = await self.state.get_state()
         if current_state is None:
             self.text = e_quit_hand_text.render()
-            self.click_text = "Ви в головному меню"
+            self.click_text = "Ти в головному меню 🏠"
         else:
             self.text = s_quit_hand_text.render()
-            self.click_text = "Ви повернулись в головне меню"
+            self.click_text = "Ти повернувся в головне меню 🏠"
         await self.state.clear()
         await self.answer()

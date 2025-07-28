@@ -10,5 +10,6 @@ commands = [
     BotCommand(command="profile", description="Показати статистику"),
     BotCommand(command="levels", description="Подивитись усі доступні рівні"),
     BotCommand(command="achievements", description="Переглянути всі доступні досягнення"),
-    BotCommand(command="quit", description="Повернутись в головне меню")
+    BotCommand(command="quit", description="Повернутись в головне меню"),
+    BotCommand(command="games", description="Почати гру")
 ]

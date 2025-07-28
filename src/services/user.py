@@ -25,10 +25,6 @@ class UserService(Service):
         self.user_achievement_repo = user_achievement_repo
         self.level_repo = level_repo
         self.achievement_repo = achievement_repo
-        
-    async def get_one(self, telegram_id: int) -> Optional[Base]:
-        user = await self.user_repo(self.session).get_one_by_telegram_id(telegram_id) 
-        return user
     
     async def get_one_with_data(self, telegram_id: int) -> Optional[dict]:
         # Here could be join
@@ -53,7 +49,7 @@ class UserService(Service):
         
     @transaction
     async def create_one(self, data: dict) -> Optional[Base]:
-        user = await self.get_one(telegram_id=data.get("telegramId"))
+        user = await self.get_user_one(telegram_id=data.get("telegramId"))
         if user:
             return None
         level = await self.level_repo(self.session).get_one_by_title(LevelEnum.beginner.value)
@@ -64,7 +60,7 @@ class UserService(Service):
     
     @transaction
     async def delete_one(self, telegram_id: int) -> Optional[Base]:
-        user = await self.get_one(telegram_id=telegram_id)
+        user = await self.get_user_one(telegram_id=telegram_id)
         if not user:
             print("BOBA")
             return None

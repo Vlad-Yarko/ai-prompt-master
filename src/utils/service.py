@@ -14,6 +14,7 @@ class Service:
         ):
         self.session = session
         self.repo = None
+        self.user_repo = None
         self.redis_manager = redis_manager
     
     async def get(self, page: Optional[int] = None, **kwargs) -> dict:
@@ -55,3 +56,7 @@ class Service:
             return obj
         obj = await self.repo(self.session).delete_one(id)
         return obj
+    
+    async def get_user_one(self, telegram_id: int) -> Optional[Base]:
+        user = await self.user_repo(self.session).get_one_by_telegram_id(telegram_id) 
+        return user

@@ -21,12 +21,12 @@ class UserMessageResponse(MessageResponse):
         await self.answer()
 
     async def delete_command_hand(self, service: UserService) -> None:
-        user = await service.get_one(self.message.from_user.id)
+        user = await service.get_user_one(self.message.from_user.id)
         if not user:
             self.text = e_delete_command_hand_text.render()
         else:
             self.text = s_delete_command_hand_text.render()
-            self.keyboard = delete_command_hand_keyboard
+            self.keyboard = delete_command_hand_keyboard()
             await self.state.set_state(UserState.delete)
         await self.answer()
         
@@ -37,6 +37,7 @@ class UserMessageResponse(MessageResponse):
         else:
             self.text = s_profile_hand_text.render(
                 username=escape_md(self.message.from_user.username),
+                # There is a shorthand
                 # achievements=user["achievements"],
                 # statistics=user["statistics"],
                 # level=user["level"]

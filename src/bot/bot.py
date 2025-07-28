@@ -21,7 +21,8 @@ class Bot(Application):
         self.commands = commands
         self.routers = [
             base_router,
-            user_router
+            user_router,
+            game_router
         ]
         self.dp.include_routers(*self.routers)
         
