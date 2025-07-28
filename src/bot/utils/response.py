@@ -43,7 +43,7 @@ class CallbackResponse(Response):
     def __init__(
         self, 
         callback: CallbackQuery, 
-        text: str, 
+        text: str = "", 
         keyboard: Optional[Keyboard] = None, 
         click_text: str = "", 
         state: Optional[FSMContext] = None,
@@ -57,7 +57,7 @@ class CallbackResponse(Response):
 
     async def answer(self):
         await self.callback.answer(self.click_text)
-        await self.callback.answer(
+        await self.callback.message.answer(
             text=self.text,
             reply_markup=self.keyboard,
             parse_mode=self.parse_mode

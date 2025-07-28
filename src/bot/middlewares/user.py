@@ -5,7 +5,7 @@ from aiogram.types import TelegramObject
 
 from src.databases import db_session
 from src.services import UserService
-from src.repositories import UserRepository, UserStatsRepository, LevelRepository
+from src.repositories import UserRepository, UserStatsRepository, LevelRepository, UserAchievementRepository, AchievementRepository
 
 
 class UserMiddleware(BaseMiddleware):
@@ -24,7 +24,9 @@ class UserMiddleware(BaseMiddleware):
                 session=session,
                 user_repo=UserRepository,
                 user_stats_repo=UserStatsRepository,
-                level_repo=LevelRepository
+                user_achievement_repo=UserAchievementRepository,
+                level_repo=LevelRepository,
+                achievement_repo=AchievementRepository
             ) 
             result = await handler(event, data)
             return result

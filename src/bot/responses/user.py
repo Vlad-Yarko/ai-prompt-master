@@ -1,3 +1,5 @@
+from src.bot.utils.markdown import escape_md
+
 from src.bot.utils.response import MessageResponse, CallbackResponse
 from src.bot.text.user import *
 from src.bot.keyboards.inline.user import delete_command_hand_keyboard
@@ -29,17 +31,24 @@ class UserMessageResponse(MessageResponse):
         await self.answer()
         
     async def profile_hand(self, service: UserService) -> None:
-        user = await service.get_one(self.message.from_user.id)
+        user = await service.get_one_with_data(self.message.from_user.id)
         if not user:
             self.text = e_profile_hand_text.render()
         else:
-            self.text = s_profile_hand_text.render()
+            self.text = s_profile_hand_text.render(
+                username=escape_md(self.message.from_user.username),
+                # achievements=user["achievements"],
+                # statistics=user["statistics"],
+                # level=user["level"]
+                **user
+            )
         await self.answer()
         
         
 class UserCallbackResponse(CallbackResponse):
     async def delete_hand(self, service: UserService) -> None:
-        user = await service.delete_one(self.callback.message.from_user.id)
+        telegram_id = self.callback.from_user.id
+        user = await service.delete_one(telegram_id)
         if not user:
             # There is not sense to write text again
             self.text = e_delete_command_hand_text.render()

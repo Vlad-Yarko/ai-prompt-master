@@ -44,6 +44,6 @@ class BaseCallbackResponse(CallbackResponse):
             self.click_text = "Ви в головному меню"
         else:
             self.text = s_quit_hand_text.render()
-            await self.state.clear()
             self.click_text = "Ви повернулись в головне меню"
+        await self.state.clear()
         await self.answer()

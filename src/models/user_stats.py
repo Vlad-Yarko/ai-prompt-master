@@ -1,13 +1,13 @@
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from src.models.base import Base
+from src.models.base import Base, BaseFields
 
 
-class UserStats(Base):
+class UserStats(Base, BaseFields):
     __tablename__ = "user_stats"
     
-    userId: Mapped[int] = mapped_column(ForeignKey("users.id"))
+    userId: Mapped[int] = mapped_column(ForeignKey("users.id", ondelete="CASCADE"))
     
     totalScore: Mapped[int] = mapped_column(default=0)
     totalGamesPlayed: Mapped[int] = mapped_column(default=0)

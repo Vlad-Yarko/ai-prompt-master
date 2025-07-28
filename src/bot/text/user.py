@@ -41,19 +41,25 @@ s_delete_hand_text = Text("""
 s_profile_hand_text = Text("""
 👤 *Профіль користувача*
 
+{% if username %}
 📛 Ім'я: {{ username }}
+{% endif %}
 
 🏆 Досягнення: 
+{% if achievements %}
 {% for achievement in achievements %}
 {{ achievement.emoji }} *{{ achievement.title }}*:
 {{ achievement.description }}
 {% endfor %}
+{% else %}
+🕸️ Тут поки порожньо... Відкрий свої перші досягнення!
+{% endif %}
 
-📚 Ігор зіграно: *{{ games_played }}*
+📚 Ігор зіграно: *{{ statistics.totalGamesPlayed }}*
 
-📊 Рейтинг: *{{ score }}*
+📊 Рейтинг: *{{ statistics.totalScore }}*
 
-📶 Рівень: {{ level }}
+📶 Рівень: {{ level.title }}
 """)
 
 
