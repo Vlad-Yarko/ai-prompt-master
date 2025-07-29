@@ -10,5 +10,6 @@ class Game(Base, BaseFields):
     title: Mapped[str] = mapped_column(String(100), nullable=False)
     shortDescription: Mapped[str] = mapped_column(String(250), nullable=False)
     description: Mapped[str] = mapped_column(Text, nullable=False)
+    mode: Mapped[str] = mapped_column(String(100), nullable=False)
     
     achievements: Mapped[list["Achievement"]] = relationship("Achievement", back_populates="game", uselist=True)

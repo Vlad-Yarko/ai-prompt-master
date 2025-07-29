@@ -2,7 +2,6 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.utils.service import Service
 from src.utils.repository import Repository
-from src.utils.logger import logger
 
 
 class ProgressDataService(Service):

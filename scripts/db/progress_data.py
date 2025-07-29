@@ -5,8 +5,8 @@ import asyncio
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from src.models import Level, Achievement, Game
 from src.databases import db_session
+from src.models import Level, Achievement, Game
 from src.enums.level import LevelEnum
 
 
@@ -64,11 +64,11 @@ async def fill_achievement(session: AsyncSession) -> None:
         Achievement(title="Реформатор ІІ", description="Зароби 2000 очок у Anti-prompt Mode", emoji="🧠✏️", conditionKey="antiPromptMode", conditionValue=2000, gameId=anti_prompt_mode.id),
 
         # Prompt puzzles
-        Achievement(title="Збирач слів", description="Зароби 50 очок у Prompt Puzzles", emoji="🧩", conditionKey="promptPuzzlesMode", conditionValue=50, gameId=puzzles_mode.id),
-        Achievement(title="Розумник GPT", description="Зароби 200 очок у Prompt Puzzles", emoji="🪄", conditionKey="promptPuzzlesMode", conditionValue=200, gameId=puzzles_mode.id),
-        Achievement(title="Комбінатор промптів", description="Зароби 500 очок у Prompt Puzzles", emoji="🔀", conditionKey="promptPuzzlesMode", conditionValue=500, gameId=puzzles_mode.id),
-        Achievement(title="Алхімік підказок", description="Зароби 1000 очок у Prompt Puzzles", emoji="⚗️", conditionKey="promptPuzzlesMode", conditionValue=1000, gameId=puzzles_mode.id),
-        Achievement(title="Майстер синтезу", description="Зароби 2000 очок у Prompt Puzzles", emoji="🧬", conditionKey="promptPuzzlesMode", conditionValue=2000, gameId=puzzles_mode.id),
+        Achievement(title="Збирач слів", description="Зароби 50 очок у Prompt Puzzles", emoji="🧩", conditionKey="puzzleMode", conditionValue=50, gameId=puzzles_mode.id),
+        Achievement(title="Розумник GPT", description="Зароби 200 очок у Prompt Puzzles", emoji="🪄", conditionKey="puzzleMode", conditionValue=200, gameId=puzzles_mode.id),
+        Achievement(title="Комбінатор промптів", description="Зароби 500 очок у Prompt Puzzles", emoji="🔀", conditionKey="puzzleMode", conditionValue=500, gameId=puzzles_mode.id),
+        Achievement(title="Алхімік підказок", description="Зароби 1000 очок у Prompt Puzzles", emoji="⚗️", conditionKey="puzzleMode", conditionValue=1000, gameId=puzzles_mode.id),
+        Achievement(title="Майстер синтезу", description="Зароби 2000 очок у Prompt Puzzles", emoji="🧬", conditionKey="puzzleMode", conditionValue=2000, gameId=puzzles_mode.id),
     ]
     session.add_all(achievements)
 

@@ -1,6 +1,5 @@
-from src.bot.utils.markdown import escape_md
-
 from src.bot.utils.response import MessageResponse, CallbackResponse
+from src.bot.utils.markdown import escape_md
 from src.bot.text.user import *
 from src.bot.keyboards.inline.user import delete_command_hand_keyboard
 from src.bot.fsm.user import UserState
@@ -31,7 +30,7 @@ class UserMessageResponse(MessageResponse):
         await self.answer()
         
     async def profile_hand(self, service: UserService) -> None:
-        user = await service.get_one_with_data(self.message.from_user.id)
+        user = await service.get_user_one_with_data(self.message.from_user.id)
         if not user:
             self.text = e_profile_hand_text.render()
         else:

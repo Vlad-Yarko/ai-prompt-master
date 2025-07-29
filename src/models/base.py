@@ -1,5 +1,3 @@
-# import uuid
-
 from sqlalchemy import DateTime, func
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 
@@ -9,8 +7,10 @@ class Base(DeclarativeBase):
         return {column.name: getattr(self, column.name) for column in self.__table__.columns}
     
     
-# I need to separate field from base because of repository logic and secondary tables 
+# I need to separate field from base because of repository logic and secondary tables
+
 class BaseFields:
+    # I also i wanted to use uuid as primary key
     # id: Mapped[uuid.UUID] = mapped_column(primary_key=True, default=uuid.uuid4)
     id: Mapped[int] = mapped_column(primary_key=True)
     

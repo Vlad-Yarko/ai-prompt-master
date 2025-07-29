@@ -3,16 +3,15 @@ from aiogram.types import Message, CallbackQuery
 from aiogram.filters import Command, StateFilter
 from aiogram.fsm.context import FSMContext
 
-from src.bot.responses.base import BaseMessageResponse, BaseCallbackResponse
 from src.bot.middlewares import BaseMiddleware
+from src.bot.responses import BaseMessageResponse, BaseCallbackResponse
 from src.bot.filters import CallDataEq
 from src.services import ProgressDataService
 
 
 router = Router()
-# There is not need to do like that
-# router.message.filter(StateFilter(None))
 router.message.middleware(BaseMiddleware())
+# Callback query does not need the service, so middleware was not applied
 
 
 @router.message(StateFilter(None), Command('start'))

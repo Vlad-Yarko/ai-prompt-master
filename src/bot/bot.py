@@ -5,7 +5,6 @@ from src.config import settings
 from src.bot.lifespan import on_startup, on_shutdown
 from src.bot.commands import commands
 from src.bot.routers import *
-# from src.bot.middlewares import DBSession
 
 
 class Bot(Application):
@@ -15,9 +14,6 @@ class Bot(Application):
         self.dp = Dispatcher()
         self.dp.startup.register(on_startup)
         self.dp.shutdown.register(on_shutdown)
-        # There is not need to use this middleware. Because every service has its own middleware
-        # self.dp.message.middleware(DBSession())
-        # self.dp.callback_query.middleware(DBSession())
         self.commands = commands
         self.routers = [
             base_router,

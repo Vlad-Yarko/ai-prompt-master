@@ -4,7 +4,7 @@ import uuid
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.models import Base
-from src.databases import redis_manager
+from src.utils.llm import LLM
 
 
 class Service:
@@ -15,7 +15,7 @@ class Service:
         self.session = session
         self.repo = None
         self.user_repo = None
-        self.redis_manager = redis_manager
+        self.LLM = LLM
     
     async def get(self, page: Optional[int] = None, **kwargs) -> dict:
         full_data = await self.repo(self.session).get(page, **kwargs)
@@ -60,3 +60,30 @@ class Service:
     async def get_user_one(self, telegram_id: int) -> Optional[Base]:
         user = await self.user_repo(self.session).get_one_by_telegram_id(telegram_id) 
         return user
+    
+    async def get_user_one_with_data(self, telegram_id: int) -> Optional[dict]:
+        # Here could be join
+        user = await self.user_repo(self.session).get_one_by_telegram_id(telegram_id) 
+        if user:
+            user_statistics = await self.user_stats_repo(self.session).get_one_by_user_id(user.id)
+            user_level = await self.level_repo(self.session).get_one_by_id(user_statistics.levelId)
+            user_achievements = await self.user_achievement_repo(self.session).get_by_user_id(user.id)
+            achievements = []
+            if user_achievements:
+                for user_achievement in user_achievements:
+                    achievement = await self.achievement_repo(self.session).get_one_by_id(user_achievement.achievementId)
+                    achievements.append(achievement)
+            data = {
+                "user": user,
+                "statistics": user_statistics,
+                "achievements": achievements,
+                "level": user_level
+            }
+            return data
+        return user
+    
+    async def ask_llm(self, messages: list[dict]) -> str:
+        # model: Optional[str] = None
+        llm = self.LLM()
+        response = await llm.ask(messages)
+        return response

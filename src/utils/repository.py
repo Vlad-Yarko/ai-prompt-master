@@ -92,6 +92,16 @@ class SQLAlchemyRepository(Repository):
         data = await self.session.execute(query)
         return data.scalars().all()
     
+    # works only with int ids
+    async def get_next(self, id: Union[int, uuid.UUID]) -> Optional[Base]:
+        query = select(self.model).where(self.model.id > id).limit(1)
+        data = await self.session.execute(query)
+        return data.scalar()
+    
+    async def create_many(self, data: list[dict]) -> None:
+        stmt = insert(self.model).values(data)
+        await self.session.execute(stmt)
+    
     async def create_one(self, **kwargs) -> Optional[Base]:
         # PostgreSQL
         stmt = insert(self.model).values(**kwargs).returning(self.model)
@@ -103,16 +113,21 @@ class SQLAlchemyRepository(Repository):
         # obj = await self.get_one_by_id(result.lastrowid)
         # return obj
     
-    async def update_one(self, id: Union[int, uuid.UUID], **kwargs) -> Optional[Base]:
+    async def update_one(self, data: dict, **conditions) -> Optional[Base]:
         # PostgreSQL
-        smtp = update(self.model).where(self.model.id == id).values(**kwargs).returning(self.model)
+        db_conditions = [getattr(self.model, field_name) == value for field_name, value in conditions.items()]
+        smtp = update(self.model).where(*db_conditions).values(**data).returning(self.model)
         obj = await self.session.execute(smtp)
         return obj.scalar()
-        # MySQL
+        # MySQL # it is not good snippet
         # smtp = update(self.model).where(self.model.id == id).values(**kwargs)
         # await self.session.execute(smtp)
         # obj = await self.get_one_by_id(id)
         # return obj
+        
+    async def update_one_by_id(self, id: Union[int, uuid.UUID], **kwargs) -> Optional[Base]:
+        data = await self.update_one(kwargs, id=id)
+        return data
     
     async def delete_one(self, id: Union[int, uuid.UUID]) -> Optional[Base]:
         # PostgreSQL

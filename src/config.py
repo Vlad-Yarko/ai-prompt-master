@@ -15,8 +15,8 @@ class Settings(BaseSettings):
     TEST_POSTGRESQL: str
     
     # Redis database URLs
-    REDIS: str
-    TEST_REDIS: str
+    # REDIS: str
+    # TEST_REDIS: str
     
     # Telegram bot token
     BOT_TOKEN: str
